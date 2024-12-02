@@ -1,3 +1,5 @@
+
+
 # Logs
 logs
 *.log
@@ -7,8 +9,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
+# Dependency directories
+node_modules/
+dist   
 dist-ssr
 *.local
 
@@ -22,3 +25,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+
