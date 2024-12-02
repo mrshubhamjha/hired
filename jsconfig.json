@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".", // Sets the base directory for resolving imports
+    "paths": {
+      "@/*": ["./src/*"] // Maps '@/' to the 'src' directory
+    },
+    "jsx": "react-jsx", // Enable JSX support for React
+    "target": "ESNext" // Use the latest JavaScript features
+  },
+  "include": ["src/**/*"], // Include all files in 'src'
+  "exclude": ["node_modules", "dist"] // Exclude unnecessary directories
+}
+
