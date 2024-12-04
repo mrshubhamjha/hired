@@ -32,17 +32,20 @@ const Joblisting = () => {
           <BarLoader className="w-full" width="100%" color="transparent" />
         </div>
       )}
-
-      {!loadingJobs && (
+      {loadingJobs === false && (
         <div className='mt-9 flex flex-col gap-3 px-2'>
-          {jobs.length ? (
-            jobs.map((job) => (
-          <div className="mx-auto w-full max-w-l">
-            <JobCard key={job.id} job={job} />
-          </div>
-            ))
+          {jobs?.length ? (
+            jobs.map((job) => {
+              return (
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  savedInit={job?.saved?.length > 0}
+                />
+              );
+            })
           ) : (
-            <div>No Jobs Found 🥲</div>
+            <div>No Jobs Found 😢</div>
           )}
         </div>
       )}
