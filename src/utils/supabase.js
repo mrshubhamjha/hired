@@ -1,28 +1,29 @@
 import { createClient } from "@supabase/supabase-js";
 
 export const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+export const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-let cachedSupabase = null;
-let cachedToken = null;  // Store the current access token
+let supabaseInstance = null;
 
-const supabaseClient = async (supabaseAccessToken) => {
-  // If the token has changed or no cached client exists, create a new one
-  if (!cachedSupabase || cachedToken !== supabaseAccessToken) {
-    // Create a new Supabase client
-    cachedSupabase = createClient(supabaseUrl, supabaseKey, {
+const supabaseClient = (supabaseAccessToken) => {
+  if (!supabaseInstance) {
+    supabaseInstance = createClient(supabaseUrl, supabaseKey, {
       global: {
-        headers: {
-          Authorization: `Bearer ${supabaseAccessToken}`,
-        },
+        headers: supabaseAccessToken 
+          ? { Authorization: `Bearer ${supabaseAccessToken}` }
+          : {},
+      },
+      auth: {
+        persistSession: false,
       },
     });
-
-    // Cache the new token
-    cachedToken = supabaseAccessToken;
   }
 
-  return cachedSupabase;
+  if (supabaseAccessToken) {
+    supabaseInstance.auth.setSession({ access_token: supabaseAccessToken });
+  }
+
+  return supabaseInstance;
 };
 
 export default supabaseClient;

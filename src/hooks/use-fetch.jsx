@@ -1,32 +1,40 @@
-import { useSession } from "@clerk/clerk-react"
-import { useState } from "react";
+import { useSession } from "@clerk/clerk-react";
+import { useState, useCallback } from "react";
 
-const useFetch = (cb,options={})=>{
-    const [data, setData]= useState(undefined);
-    const [loading, setLoading]=useState(null);
-    const [error, setError]= useState(null);
+const useFetch = (callback, options = {}) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { session } = useSession();
 
-    const {session}=useSession();
+  const fn = useCallback(async (...args) => {
+    if (!session) {
+      console.error('No session available');
+      return;
+    }
 
-    const fn = async(...args)=>{
-        setLoading(true);
-        setError(null);
+    setLoading(true);
+    setError(null);
 
-        try{
-            const supabaseAccessToken=await session.getToken({
-                template:'supabase',
-            });
-            const response = await cb(supabaseAccessToken,options,...args);
-            setData(response);
-            setError(null);
-        } catch (err){
-            setError(err);
-        }finally{
-            setLoading(false);
-        }
-    };
+    try {
+      // Retrieve the Supabase token using Clerk session
+      const supabaseAccessToken = await session.getToken({
+        template: 'supabase',
+      });
 
-    return {fn,data,loading,error};
-}
+      // Execute the callback function with the token and any other arguments
+      const response = await callback(supabaseAccessToken, options, ...args);
+      setData(response);
+    } catch (err) {
+      setError(err);
+      console.error('Fetch error:', err);
+      // You might want to show a user-friendly error message here
+    } finally {
+      setLoading(false);
+    }
+  }, [session, callback, options]);
+
+  return { fn, data, loading, error };
+};
 
 export default useFetch;
