@@ -5,6 +5,8 @@ import './index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { shadesOfPurple } from '@clerk/themes'
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
