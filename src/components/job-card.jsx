@@ -18,16 +18,18 @@ const JobCard = ({
   const { user } = useUser();
 
   const handleSaveJob = async () => {
-    setSaved(!saved);
+    const newSavedState = !saved;
+    setSaved(newSavedState);
     try {
       await fnSavedJob({
         user_id: user.id,
         job_id: job.id,
       });
-      onJobSaved(saved);
+      onJobSaved(newSavedState);  // Pass the updated saved state
     } catch (error) {
-      setSaved(saved);
+      setSaved(saved);  // Revert the saved state in case of error
       console.error('Error saving job:', error);
+      // You can also show a toast notification or user-friendly error here
     }
   };
 
@@ -37,7 +39,7 @@ const JobCard = ({
 
   const handleDeleteJob = async () => {
     await fnDeleteJob();
-    onJobSaved();
+    onRemoveJob(job.id);  // Pass the job id or update the parent accordingly
   };
 
   useEffect(() => {

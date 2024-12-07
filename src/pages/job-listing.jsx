@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import BarLoader from 'react-spinners/BarLoader';
 import JobCard from '@/components/job-card.jsx';
-import { getCompanies } from '@/api/apiCompanies';
+import {getCompanies} from '@/api/apiCompanies';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup } from '@/components/ui/select';

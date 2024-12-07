@@ -10,6 +10,7 @@ const useFetch = (callback, options = {}) => {
   const fn = useCallback(async (...args) => {
     if (!session) {
       console.error('No session available');
+      setError('No session available');  // User-friendly error
       return;
     }
 
@@ -22,13 +23,18 @@ const useFetch = (callback, options = {}) => {
         template: 'supabase',
       });
 
+      if (!supabaseAccessToken) {
+        console.error("No Supabase access token found");
+        setError("No access token found");
+        return;
+      }
+
       // Execute the callback function with the token and any other arguments
       const response = await callback(supabaseAccessToken, options, ...args);
       setData(response);
     } catch (err) {
-      setError(err);
+      setError(`Error: ${err.message}`);
       console.error('Fetch error:', err);
-      // You might want to show a user-friendly error message here
     } finally {
       setLoading(false);
     }
