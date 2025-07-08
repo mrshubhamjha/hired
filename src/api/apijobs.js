@@ -6,6 +6,9 @@ export async function getJobs(token, { location, company_id, searchQuery }) {
   let query = supabase
     .from("jobs")
     .select("*, saved: saved_jobs(id), company: companies(name,logo_url)");
+    //data, error = await query;
+    //console.log(data);
+    //console.log(error);
 
   if (location) {
     query = query.eq("location", location);
